@@ -6,23 +6,13 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesBindin
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import readObjectAndNestedObjectFromAYamlPropertiesFile.configuration.MyConfigurationBean.MyObject;
 
 @Component
 @ConfigurationPropertiesBinding
 public class MyMyObjectConverter implements Converter<LinkedHashMap<String, String> , MyObject> {
-    @Override
+	@Override
     public MyObject convert(LinkedHashMap<String, String> sourceFromJson) {
-        if (sourceFromJson == null) {
-            return null;
-        }
-        return copyHashMapContentIntoEquivalentMyObject(sourceFromJson);
-    }
-    
-    private MyObject copyHashMapContentIntoEquivalentMyObject(LinkedHashMap<String, String> myObjectFromJson) {
-    	final ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(myObjectFromJson, MyObject.class);
+        return (MyObject) MyObjectConverterUtil.copyHashMapContentIntoEquivalentMyObject(sourceFromJson, MyObject.class);
     }
 }
